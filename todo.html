@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TO-DO WEB APP</title>
+    <style>
+        body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background-color: #f2f2f2;
+}
+
+.container {
+  margin:  auto;
+  max-width: 400px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  color: #333;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+}
+
+li {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.completed {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>To-Do web App</h1>
+        <input type="text" id="taskInput" placeholder="Add a task...">
+        <button onclick="addTask()">Add</button>
+        <h2>Pending Tasks</h2>
+        <ul id="pendingTasks"></ul>
+        <h2>Completed Tasks</h2>
+        <ul id="completedTasks"></ul>
+      </div>
+
+
+
+      <script>
+        // Array to store tasks
+let tasks = [];
+
+// Function to add a new task
+function addTask() {
+  const taskInput = document.getElementById("taskInput");
+  const task = taskInput.value.trim();
+  
+  if (task !== "") {
+    tasks.push({ 
+      name: task,
+      completed: false,
+      dateAdded: new Date().toLocaleString(),
+      dateCompleted: ""
+    });
+    taskInput.value = "";
+    renderTasks();
+  }
+}
+
+// Function to render the tasks
+function renderTasks() {
+  const pendingTasks = document.getElementById("pendingTasks");
+  const completedTasks = document.getElementById("completedTasks");
+
+  // Clear the existing lists
+  pendingTasks.innerHTML = "";
+  completedTasks.innerHTML = "";
+
+  tasks.forEach((task, index) => {
+    const li = document.createElement("li");
+    const text = document.createTextNode(task.name);
+
+    li.appendChild(text);
+
+    if (task.completed) {
+      li.classList.add("completed");
+      completedTasks.appendChild(li);
+    } else {
+      const completeButton = document.createElement("button");
+      completeButton.innerHTML = "Complete";
+      completeButton.addEventListener("click", () => completeTask(index));
+      li.appendChild(completeButton);
+      pendingTasks.appendChild(li);
+    }
+  });
+}
+
+// Function to complete a task
+function completeTask(index) {
+  tasks[index].completed = true;
+  tasks[index].dateCompleted = new Date().toLocaleString();
+  renderTasks();
+}
+
+// Initial rendering of tasks
+renderTasks();
+
+      </script>
+</body>
+</html>
